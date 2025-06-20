@@ -1,15 +1,28 @@
 /* General Styling */
 body {
-  background-color: #f7f9fb;
-  font-family: 'Segoe UI', sans-serif;
   margin: 0;
   padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f0faff, #e6f7ff, #fdfdff);
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  color: #333;
 }
+.container.responsive {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(5px);
+  border-radius: 16px;
+  box-shadow: 0 0 30px rgba(0, 123, 255, 0.1);
+  padding: 2rem;
+  margin-top: 2rem;
+}
+
 
 /* Clinical Cards */
 .card-insight {
-  border-left: 4px solid #0d6efd;
-  background: #fff;
+  border-left: 4px solid #1064e1;
+  background: #ebe1e1;
   padding: 1rem;
   border-radius: 8px;
   margin-bottom: 1rem;
@@ -30,7 +43,7 @@ body {
 #chart-container canvas,
 #mainChart {
   margin-top: 20px;
-  background: white !important; /* Prevent transparent background in capture */
+  background: rgba(233, 226, 233, 0.792) !important; /* Prevent transparent background in capture */
 }
 
 /* Chart Title */
@@ -39,7 +52,7 @@ body {
   font-size: 1.5rem;
   font-weight: 600;
   text-align: center;
-  color: #1e293b;
+  color: #0a61ec;
 }
 
 /* Export Buttons */
@@ -64,8 +77,8 @@ body {
 }
 
 .export-buttons .btn-outline-primary:hover {
-  background-color: #0d6efd;
-  color: white;
+  background-color: #0362f1;
+  color: rgb(190, 199, 193);
 }
 
 .export-buttons .btn-outline-success:hover {
@@ -88,7 +101,7 @@ body {
 
 /* Clinical Summary Box */
 .clinical-summary {
-  background-color: #e3f2fd;
+  background-color: #0d8be6;
   border-left: 4px solid #1976d2;
   padding: 1rem;
   font-size: 0.95rem;
@@ -100,8 +113,8 @@ body {
 /* Clinical Ranges Panel */
 #clinicalRanges {
   background-color: #fff3cd;
-  color: #856404;
-  border-left: 5px solid #ffc107;
+  color: #049ee0;
+  border-left: 5px solid #cec9bb;
   padding: 1rem;
   border-radius: 6px;
   margin-top: 2rem;
@@ -141,4 +154,69 @@ body {
   .chart-title {
     font-size: 1.2rem;
   }
+}
+#insightGrid .card {
+  transition: transform 0.2s ease-in-out;
+}
+
+#insightGrid .card:hover {
+  transform: scale(1.03);
+}
+/* Biomarker status card colors */
+.status-normal {
+  background: linear-gradient(135deg, #00c853, #64dd17);
+  border-left: 5px solid #2e7d32;
+}
+
+.status-high {
+  background: linear-gradient(135deg, #ff1744, #d50000);
+  border-left: 5px solid #b71c1c;
+}
+
+.status-low {
+  background: linear-gradient(135deg, #ff9100, #ff6d00);
+  border-left: 5px solid #e65100;
+}
+
+.status-unknown {
+  background: linear-gradient(135deg, #90a4ae, #607d8b);
+  border-left: 5px solid #24769b;
+}
+
+#insightGrid .card {
+  transition: transform 0.2s ease-in-out;
+  border-radius: 12px;
+}
+
+#insightGrid .card:hover {
+  transform: scale(1.03);
+}
+.biomarker-btn {
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+  margin: 4px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.active-bio {
+  background: linear-gradient(to right, #1e88e5, #42a5f5);
+  color: white;
+  border: none;
+}
+
+.inactive-bio {
+  background: white;
+  color: #1976d2;
+  border: 2px solid #64b5f6;
+}
+
+.biomarker-btn:hover {
+  background: #bbdefb;
+  color: #0d47a1;
 }

@@ -22,8 +22,8 @@
 
     <!-- Upload -->
     <div class="mb-4 d-flex flex-column align-items-center">
-      <label class="form-label fw-semibold mb-2">📥 Upload Your Health Report (CSV Only)</label>
-      <input type="file" id="fileInput" accept=".csv" class="form-control w-auto mb-2" />
+      <label class="form-label fw-semibold mb-2">📥 Upload Your Health Report (CSV or PDF)</label>
+      <input type="file" id="fileInput" accept=".csv,.pdf" class="form-control w-auto mb-2" />
       <div id="patientInfo" class="text-muted small mt-2"></div>
     </div>
 
@@ -42,14 +42,15 @@
     </div>
 
     <!-- Clinical Ranges Section -->
-    <div class="clinical-summary mt-4 p-3 bg-white rounded shadow-sm border border-info">
+    <!--<div class="clinical-summary mt-4 p-3 bg-white rounded shadow-sm border border-info">
       <h6 class="mb-2 text-primary">📘 Clinical Reference Ranges</h6>
       <div id="clinicalRanges" class="small text-dark">
         <!-- Clinical ranges will be injected here -->
       </div>
     </div>
     <!-- Insight Grid -->
-    <div id="insightGrid" class="insight-grid"></div>
+    <!-- Status / Insight Grid Section -->
+<div id="insightGrid" class="row gy-3"></div>
 
     <!-- Clinical Ranges Panel -->
 <div id="clinicalRanges" class="mt-4"></div>

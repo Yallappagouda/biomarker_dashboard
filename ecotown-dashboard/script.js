@@ -29,13 +29,41 @@ function handleFileUpload(event) {
   const file = event.target.files[0];
   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    const csv = e.target.result;
-    parseCSV(csv);
-  };
-  reader.readAsText(file);
+  const isCSV = file.name.endsWith('.csv');
+  const isPDF = file.name.endsWith('.pdf');
+
+  if (isCSV) {
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      const csv = e.target.result;
+      parseCSV(csv);
+    };
+    reader.readAsText(file);
+  } else if (isPDF) {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('https://your-backend-url.onrender.com/extract', {
+      method: 'POST',
+      body: formData
+    })
+    .then(res => res.json())
+    .then(json => {
+      if (json && json.data) {
+        const csvText = json.data;
+        parseCSV(csvText);
+      } else {
+        alert("⚠️ Invalid PDF content returned");
+      }
+    })
+    .catch(err => {
+      alert("❌ Failed to process PDF: " + err);
+    });
+  } else {
+    alert("⚠️ Please upload a valid CSV or PDF file.");
+  }
 }
+
 
 function loadSampleData() {
   fetch('assets/data/sample_data.csv')
@@ -62,22 +90,38 @@ function updateTabs() {
   const tabs = document.getElementById('biomarkerTabs');
   tabs.innerHTML = '';
 
+  const biomarkerIcons = {
+    total_cholesterol: "🧬",
+    ldl: "🩸",
+    hdl: "💉",
+    triglycerides: "🍔",
+    creatinine: "🧪",
+    vitamin_d: "☀️",
+    vitamin_b12: "🍊",
+    hba1c: "📊"
+  };
+
   const keys = Object.keys(biomarkerData[0]).filter(k => k !== 'date' && k !== 'name');
 
   keys.forEach(key => {
     const btn = document.createElement('button');
-    btn.textContent = key.toUpperCase();
-    btn.className = `btn btn-sm ${selectedBiomarker === key ? 'btn-primary' : 'btn-outline-primary'}`;
+    const isActive = selectedBiomarker === key;
+    btn.innerHTML = `${biomarkerIcons[key] || '🧪'} ${key.replace('_', ' ').toUpperCase()}`;
+    btn.className = `btn biomarker-btn ${isActive ? 'active-bio' : 'inactive-bio'}`;
     btn.dataset.key = key;
+
     btn.onclick = () => {
       selectedBiomarker = key;
+      updateTabs();
       updateChart();
       updateInsightCards();
       updateClinicalRanges(key);
     };
+
     tabs.appendChild(btn);
   });
 }
+
 
 function getStatus(key, value) {
   const range = biomarkerRanges[key];
@@ -95,22 +139,48 @@ function updateInsightCards() {
   const latest = biomarkerData[biomarkerData.length - 1];
   grid.innerHTML = '';
 
+  const biomarkerIcons = {
+    total_cholesterol: "🧬",
+    ldl: "🩸",
+    hdl: "💉",
+    triglycerides: "🍔",
+    creatinine: "🧪",
+    vitamin_d: "☀️",
+    vitamin_b12: "🍊",
+    hba1c: "📊"
+  };
+
   Object.keys(latest).forEach(key => {
     if (key === 'date' || key === 'name') return;
+
     const val = parseFloat(latest[key]);
     const status = getStatus(key, val);
     const unit = biomarkerRanges[key]?.unit || '';
+    const icon = biomarkerIcons[key] || "❓";
 
-    const div = document.createElement('div');
-    div.className = 'insight-card';
-    div.innerHTML = `
-      <h6>${key.toUpperCase()}</h6>
-      <p><strong>${val} ${unit}</strong></p>
-      <span class="badge ${status.includes('Normal') ? 'bg-success' : status.includes('High') ? 'bg-danger' : 'bg-warning'}">${status}</span>
+    let cardClass = 'status-unknown';
+    if (status.includes('Normal')) cardClass = 'status-normal';
+    else if (status.includes('High')) cardClass = 'status-high';
+    else if (status.includes('Low')) cardClass = 'status-low';
+
+    const col = document.createElement('div');
+    col.className = 'col-12 col-sm-6 col-md-4 col-lg-3';
+
+    col.innerHTML = `
+      <div class="card h-100 shadow-sm ${cardClass}">
+        <div class="card-body text-center text-white">
+          <div style="font-size: 2rem;">${icon}</div>
+          <h6 class="text-uppercase mt-2">${key.replace('_', ' ')}</h6>
+          <h4 class="fw-bold">${val} ${unit}</h4>
+          <span class="badge bg-light text-dark px-3 py-2">${status}</span>
+        </div>
+      </div>
     `;
-    grid.appendChild(div);
+
+    grid.appendChild(col);
   });
 }
+
 
 function updateChart() {
   if (!biomarkerData || biomarkerData.length === 0) return;
