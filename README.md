@@ -116,6 +116,12 @@ date,name,total_cholesterol,ldl,hdl,triglycerides,creatinine,vitamin_d,vitamin_b
 Built by Yallappagouda Patil 💙  
 Inspiration: EcoTown Hackathon | Guided by Shreyas Sir  
 
+
+## 🚀 Live Demo
+- Frontend: https://ecotown-frontend.vercel.app/
+- Backend: https://ecotown-backend.onrender.com/ (optional)
+
+
 ---
 
 _Last updated: 2025-06-20_
