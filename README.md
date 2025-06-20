@@ -39,89 +39,206 @@ EcoTown Health Dashboard empowers individuals to understand their **health trend
 
 ---
 
-## 🛠️ Folder Structure
+
+
+Here's a **complete and updated `README.md`** for your GitHub repository [`biomarker_dashboard`](https://github.com/Yallappagouda/biomarker_dashboard), including:
+
+* 🎯 Project overview
+* 💡 Key features
+* 🛠️ Tech stack
+* 📁 Project structure
+* 🚀 Deployment steps for both **frontend (Vercel)** and **backend (Render)**
+* 🧪 Sample data
+* 📌 Future improvements
+
+---
+
+### ✅ `README.md` (Place in root folder)
+
+```markdown
+# 🧬 EcoTown Biomarker Dashboard
+
+An interactive and responsive web dashboard that allows users to upload health reports (CSV or PDF), extract biomarker data, visualize trends over time, and compare them with clinical reference ranges.
+
+---
+
+## 🎯 Purpose
+
+This project helps users monitor key health biomarkers over time using visual graphs and status indicators. Built for clinical clarity and user-friendliness, it's ideal for tracking lipid profiles, vitamin levels, and diabetic indicators.
+
+---
+
+## 💡 Key Features
+
+- 📤 Upload CSV or PDF lab reports  
+- 📊 Visualize biomarker trends via interactive charts (Chart.js)  
+- ⚕️ Compare values with clinical reference ranges  
+- ✅ Status indicators: Normal, High, or Low  
+- 📱 Fully responsive & mobile-friendly UI  
+- 🧪 Includes sample data auto-load for demo  
+- 📥 Export visualizations as PNG, PDF, or CSV  
+- 🐍 Flask backend for PDF parsing (using `pdfplumber`)
+
+---
+
+## 🧩 Tech Stack
+
+| Category      | Technology Used                                 |
+|---------------|--------------------------------------------------|
+| Frontend      | HTML5, CSS3, Bootstrap 5, JavaScript, Chart.js   |
+| Backend       | Python, Flask, pdfplumber                        |
+| Data Parsing  | `PapaParse` (CSV), `pdfplumber` (PDF)            |
+| Deployment    | Vercel (Frontend), Render (Backend)              |
+| Version Control | Git & GitHub                                   |
+
+---
+
+## 📁 Project Structure
 
 ```
-ecotown-dashboard/
-├── index.html
-├── style.css
-├── script.js
+
+biomarker\_dashboard/
+├── index.html                  # Frontend UI
+├── style.css                   # Dashboard styles
+├── script.js                   # Frontend JS logic
 ├── assets/
 │   └── data/
-│       └── sample_data.csv
-└── README.md
-```
+│       └── sample\_data.csv     # Default sample data
+├── backend/
+│   └── app.py                  # Flask backend for PDF parsing
+├── README.md                   # Documentation
+
+````
 
 ---
 
-## 🧪 Setup Instructions (VSCode)
+## 📦 Requirements
+
+### Backend (Python)
+- Flask
+- Flask-CORS
+- pdfplumber
+- gunicorn
+
+Install dependencies:
 
 ```bash
-# 1. Clone the Repository
-git clone https://github.com/YOUR_USERNAME/biomarker_dashboard.git
-cd biomarker_dashboard
+cd backend
+pip install -r requirements.txt
+````
 
-# 2. Open in VSCode
-code .
+> Create `requirements.txt`:
 
-# 3. Start live preview (use Live Server Extension)
-# Right-click index.html and choose "Open with Live Server"
-
-# 4. To deploy on GitHub:
-git init
-git remote add origin https://github.com/YOUR_USERNAME/biomarker_dashboard.git
-git add .
-git commit -m "Initial commit with biomarker dashboard"
-git push -u origin main
+```txt
+flask
+flask-cors
+pdfplumber
+gunicorn
 ```
 
 ---
 
-## 🚀 Vercel Deployment
+## 🚀 Deployment Instructions
 
-1. Visit [vercel.com](https://vercel.com) and sign in.
-2. Click **New Project** → Import GitHub Repo.
-3. Choose this repo → Set output directory to `.`.
-4. Click **Deploy**.
+### 1️⃣ Frontend on Vercel
 
-Your dashboard will be live at: `https://your-project-name.vercel.app`
+1. Go to [https://vercel.com](https://vercel.com) and log in.
+2. Create a **new project** and import your **GitHub repo**.
+3. In the Vercel dashboard:
+
+   * **Framework Preset:** Other
+   * **Output Directory:** `.` (root)
+   * **Build Command:** *(leave blank)*
+4. Deploy the project.
+5. You’ll get a live link like:
+   `https://ecotown-frontend.vercel.app/`
+
+> ✅ Ensure the frontend fetches the correct backend URL:
+> In `script.js`, update:
+
+```js
+const apiEndpoint = 'https://your-backend-service.onrender.com/upload';
+```
 
 ---
 
-## 📂 Sample CSV Format
+### 2️⃣ Backend on Render
+
+1. Visit [https://render.com](https://render.com)
+2. Sign in → Create a **new Web Service**
+3. Connect your GitHub repo
+4. Set options:
+
+```
+Runtime: Python 3.10+
+Build Command: pip install -r requirements.txt
+Start Command: gunicorn app:app
+Root Directory: backend
+```
+
+5. Set up `Flask-CORS` to allow requests from your frontend domain.
+
+> Your API will be available at:
+
+```
+https://your-backend-service.onrender.com/upload
+```
+
+---
+
+## 🧪 Sample Report Flow
+
+* If no file is uploaded, the dashboard auto-loads the CSV from:
+
+```
+assets/data/sample_data.csv
+```
+
+* Sample fields:
 
 ```csv
-date,name,total_cholesterol,ldl,hdl,triglycerides,creatinine,vitamin_d,vitamin_b12,hba1c
-2024-01-10,John Doe,180,110,50,145,1.0,30,460,5.4
-2024-02-10,John Doe,185,115,48,135,1.0,28,380,5.6
+name,date,total_cholesterol,ldl,hdl,triglycerides,creatinine,vitamin_d,vitamin_b12,hba1c
+John Doe,2024-05-01,175,115,48,120,0.8,35,380,5.6
 ```
 
 ---
 
-## 📈 Clinical Reference Ranges
+## 🧾 API (Backend `/upload`)
 
-- **Total Cholesterol:** 125–200 mg/dL  
-- **LDL:** 0–130 mg/dL  
-- **HDL:** 40–60 mg/dL  
-- **Triglycerides:** 0–150 mg/dL  
-- **Creatinine:** 0.6–1.3 mg/dL  
-- **Vitamin D:** 30–100 ng/mL  
-- **Vitamin B12:** 200–900 pg/mL  
-- **HbA1c:** 4.0–5.6%  
+* **POST /upload**
+
+  * Accepts: `multipart/form-data`
+  * Supported files: `.csv`, `.pdf`
+  * Returns: JSON with biomarker values
 
 ---
 
-## 👨‍⚕️ Author & Acknowledgments
+## 📌 Future Enhancements
 
-Built by Yallappagouda Patil 💙  
-Inspiration: EcoTown Hackathon | Guided by Shreyas Sir  
-
-
-## 🚀 Live Demo
-- Frontend: https://ecotown-frontend.vercel.app/
-- Backend: https://ecotown-backend.onrender.com/ (optional)
-
+* User authentication (login/logout)
+* Doctor portal to view multiple patient reports
+* Health recommendations based on values
+* PDF to CSV historic data merge
+* Better error handling and analytics
 
 ---
 
-_Last updated: 2025-06-20_
+## 👨‍💻 Developed By
+
+**Yallappagouda Patil**
+Department of ISE, Malnad College of Engineering
+GitHub: [@Yallappagouda](https://github.com/Yallappagouda)
+
+---
+
+## 📬 Feedback
+
+If you have suggestions or find bugs, feel free to open an issue or reach out on LinkedIn/GitHub.
+Thank you for visiting this project!
+
+```
+
+---
+
+Would you like me to directly generate this `README.md` file for you to upload to your repo?
+```
